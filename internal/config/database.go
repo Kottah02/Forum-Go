@@ -3,6 +3,7 @@ package config
 import (
 	"database/sql"
 	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/sessions"
@@ -13,6 +14,16 @@ var (
 	DB    *sql.DB
 	store = sessions.NewCookieStore([]byte("super-secret-key"))
 )
+
+func init() {
+	store.Options = &sessions.Options{
+		Path:     "/",
+		MaxAge:   86400 * 7, // 7 jours
+		HttpOnly: true,
+		Secure:   false, // Mettre à true en production avec HTTPS
+		SameSite: http.SameSiteLaxMode,
+	}
+}
 
 func GetSessionStore() *sessions.CookieStore {
 	return store
@@ -65,19 +76,62 @@ func createTables() {
 		UNIQUE KEY unique_user_post (post_id, user_id)
 	);`
 
-	_, err := DB.Exec(createUsersTableSQL)
-	if err != nil {
-		log.Printf("Erreur lors de la création de la table users: %v", err)
+	createTagsTableSQL := `
+	CREATE TABLE IF NOT EXISTS tags (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		name VARCHAR(50) UNIQUE NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	);`
+
+	createPostTagsTableSQL := `
+	CREATE TABLE IF NOT EXISTS post_tags (
+		post_id INT NOT NULL,
+		tag_id INT NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		PRIMARY KEY (post_id, tag_id),
+		FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+		FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+	);`
+
+	createCommentsTableSQL := `
+	CREATE TABLE IF NOT EXISTS comments (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		post_id INT NOT NULL,
+		user_id INT NOT NULL,
+		content TEXT NOT NULL,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+		FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+	);`
+
+	// Exécution des requêtes de création des tables
+	tables := []string{
+		createUsersTableSQL,
+		createPostsTableSQL,
+		createPostReactionsTableSQL,
+		createTagsTableSQL,
+		createPostTagsTableSQL,
+		createCommentsTableSQL,
 	}
 
-	_, err = DB.Exec(createPostsTableSQL)
-	if err != nil {
-		log.Printf("Erreur lors de la création de la table posts: %v", err)
+	for _, table := range tables {
+		_, err := DB.Exec(table)
+		if err != nil {
+			log.Printf("Erreur lors de la création d'une table: %v", err)
+		}
 	}
 
-	_, err = DB.Exec(createPostReactionsTableSQL)
+	// Insertion des tags par défaut
+	insertDefaultTagsSQL := `
+	INSERT IGNORE INTO tags (name) VALUES 
+	('Arme'),
+	('Skin'),
+	('Gameplay'),
+	('Ynov');`
+
+	_, err := DB.Exec(insertDefaultTagsSQL)
 	if err != nil {
-		log.Printf("Erreur lors de la création de la table post_reactions: %v", err)
+		log.Printf("Erreur lors de l'insertion des tags par défaut: %v", err)
 	}
 }
 

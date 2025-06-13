@@ -47,8 +47,17 @@ func (c *PostController) List(w http.ResponseWriter, r *http.Request) {
 		log.Println("User is not authenticated.")
 	}
 
+	// Récupérer tous les tags disponibles
+	tags, err := models.GetAllTags()
+	if err != nil {
+		log.Printf("Error getting tags: %v", err)
+		http.Error(w, "Erreur lors de la récupération des tags", http.StatusInternalServerError)
+		return
+	}
+
 	data := map[string]interface{}{
 		"Posts": posts,
+		"Tags":  tags,
 	}
 	log.Println("Rendering template posts/list...")
 	renderTemplate(w, r, "posts/list", data)
@@ -62,16 +71,38 @@ func (c *PostController) Create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != "POST" {
-		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		// Récupérer les tags pour le formulaire
+		tags, err := models.GetAllTags()
+		if err != nil {
+			http.Error(w, "Erreur lors de la récupération des tags", http.StatusInternalServerError)
+			return
+		}
+
+		data := map[string]interface{}{
+			"Tags": tags,
+		}
+		renderTemplate(w, r, "posts/create", data)
 		return
 	}
 
 	title := strings.TrimSpace(r.FormValue("title"))
 	content := strings.TrimSpace(r.FormValue("content"))
+	tagIDs := r.Form["tags"] // Récupère tous les tags sélectionnés
 
 	if title == "" || content == "" {
 		http.Error(w, "Le titre et le contenu ne peuvent pas être vides", http.StatusBadRequest)
 		return
+	}
+
+	// Convertir les tagIDs en []int
+	var tagIDsInt []int
+	for _, tagID := range tagIDs {
+		id, err := strconv.Atoi(tagID)
+		if err != nil {
+			http.Error(w, "ID de tag invalide", http.StatusBadRequest)
+			return
+		}
+		tagIDsInt = append(tagIDsInt, id)
 	}
 
 	username, _ := middleware.GetUserInfo(r)
@@ -81,7 +112,7 @@ func (c *PostController) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := models.CreatePost(user.ID, title, content); err != nil {
+	if err := models.CreatePost(user.ID, title, content, tagIDsInt); err != nil {
 		http.Error(w, "Erreur lors de la création du post", http.StatusInternalServerError)
 		return
 	}

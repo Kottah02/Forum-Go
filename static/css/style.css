@@ -687,4 +687,63 @@ footer {
     border-top: 1px solid #444;
     padding-top: 0.8rem;
     margin-top: 0.8rem;
+}
+
+/* Styles pour les tags */
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.tag {
+    background-color: #4CAF50;
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.tags-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.tag-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tag-option input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+}
+
+.tag-option label {
+    cursor: pointer;
+    color: #e0e0e0;
+}
+
+/* Style spécifique pour chaque type de tag */
+.tag[data-tag="Arme"] {
+    background-color: #FF5722;
+}
+
+.tag[data-tag="Skin"] {
+    background-color: #2196F3;
+}
+
+.tag[data-tag="Gameplay"] {
+    background-color: #9C27B0;
+}
+
+.tag[data-tag="Ynov"] {
+    background-color: #FFC107;
+    color: #1a1a1a;
 } 

@@ -25,6 +25,17 @@
                         <label for="content">Contenu</label>
                         <textarea id="content" name="content" required></textarea>
                     </div>
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <div class="tags-selection">
+                            {{range .Tags}}
+                            <div class="tag-option">
+                                <input type="checkbox" id="tag-{{.ID}}" name="tags" value="{{.ID}}">
+                                <label for="tag-{{.ID}}">{{.Name}}</label>
+                            </div>
+                            {{end}}
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Publier</button>
                 </form>
             </div>
@@ -36,6 +47,11 @@
                 <article class="post-card">
                     <h2>{{.Title}}</h2>
                     <p class="post-content">{{.Content}}</p>
+                    <div class="post-tags">
+                        {{range .Tags}}
+                        <span class="tag">{{.Name}}</span>
+                        {{end}}
+                    </div>
                     <div class="post-meta">
                         <span class="post-author">Par {{.Author}}</span>
                         <span class="post-date">{{.CreatedAt.Format "02/01/2006 15:04"}}</span>

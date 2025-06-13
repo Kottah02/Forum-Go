@@ -6,6 +6,11 @@ import (
 	"website/internal/config"
 )
 
+type Tag struct {
+	ID   int
+	Name string
+}
+
 type Post struct {
 	ID           int
 	Title        string
@@ -15,6 +20,7 @@ type Post struct {
 	LikeCount    int
 	DislikeCount int
 	UserReaction string // "like", "dislike" ou ""
+	Tags         []Tag
 }
 
 func GetAllPosts() ([]Post, error) {
@@ -55,16 +61,92 @@ func GetAllPosts() ([]Post, error) {
 			return nil, err
 		}
 		post.CreatedAt = createdAt
+
+		// Récupérer les tags du post
+		tags, err := GetPostTags(post.ID)
+		if err != nil {
+			return nil, err
+		}
+		post.Tags = tags
+
 		posts = append(posts, post)
 	}
 
 	return posts, rows.Err()
 }
 
-func CreatePost(userID int, title, content string) error {
-	_, err := config.DB.Exec("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)",
+func CreatePost(userID int, title, content string, tagIDs []int) error {
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Créer le post
+	result, err := tx.Exec("INSERT INTO posts (user_id, title, content) VALUES (?, ?, ?)",
 		userID, title, content)
-	return err
+	if err != nil {
+		return err
+	}
+
+	postID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	// Ajouter les tags
+	for _, tagID := range tagIDs {
+		_, err = tx.Exec("INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)",
+			postID, tagID)
+		if err != nil {
+			return err
+		}
+	}
+
+	return tx.Commit()
+}
+
+func GetAllTags() ([]Tag, error) {
+	rows, err := config.DB.Query("SELECT id, name FROM tags ORDER BY name")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tags []Tag
+	for rows.Next() {
+		var tag Tag
+		if err := rows.Scan(&tag.ID, &tag.Name); err != nil {
+			return nil, err
+		}
+		tags = append(tags, tag)
+	}
+	return tags, rows.Err()
+}
+
+func GetPostTags(postID int) ([]Tag, error) {
+	query := `
+		SELECT t.id, t.name 
+		FROM tags t
+		JOIN post_tags pt ON t.id = pt.tag_id
+		WHERE pt.post_id = ?
+		ORDER BY t.name
+	`
+	rows, err := config.DB.Query(query, postID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tags []Tag
+	for rows.Next() {
+		var tag Tag
+		if err := rows.Scan(&tag.ID, &tag.Name); err != nil {
+			return nil, err
+		}
+		tags = append(tags, tag)
+	}
+	return tags, rows.Err()
 }
 
 func GetUserReactions(userID int, posts []Post) error {
@@ -120,5 +202,13 @@ func GetPostByID(id int) (*Post, error) {
 		}
 		return nil, err
 	}
+
+	// Récupérer les tags du post
+	tags, err := GetPostTags(post.ID)
+	if err != nil {
+		return nil, err
+	}
+	post.Tags = tags
+
 	return post, nil
 }

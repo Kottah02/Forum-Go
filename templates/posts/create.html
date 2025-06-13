@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un post - Forum-strike</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {{template "nav.html" .}}
+
+    <main>
+        <div class="posts-container">
+            <h1>Créer un nouveau post</h1>
+            
+            <div class="post-creation">
+                <form action="/posts/create" method="POST" class="post-form">
+                    <div class="form-group">
+                        <label for="title">Titre</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Contenu</label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <div class="tags-selection">
+                            {{range .Tags}}
+                            <div class="tag-option">
+                                <input type="checkbox" id="tag-{{.ID}}" name="tags" value="{{.ID}}">
+                                <label for="tag-{{.ID}}">{{.Name}}</label>
+                            </div>
+                            {{end}}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publier</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Mon Site Web. Tous droits réservés.</p>
+    </footer>
+</body>
+</html> 

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"website/internal/config"
 )
@@ -8,13 +9,21 @@ import (
 var store = config.GetSessionStore()
 
 func IsAuthenticated(r *http.Request) bool {
-	session, _ := store.Get(r, "session-name")
+	session, err := store.Get(r, "session-name")
+	if err != nil {
+		log.Printf("Erreur lors de la récupération de la session: %v", err)
+		return false
+	}
 	auth, ok := session.Values["authenticated"].(bool)
 	return ok && auth
 }
 
 func GetUserInfo(r *http.Request) (string, bool) {
-	session, _ := store.Get(r, "session-name")
+	session, err := store.Get(r, "session-name")
+	if err != nil {
+		log.Printf("Erreur lors de la récupération de la session: %v", err)
+		return "", false
+	}
 	username, ok := session.Values["username"].(string)
 	return username, ok
 }
@@ -30,15 +39,31 @@ func RequireAuth(next http.HandlerFunc) http.HandlerFunc {
 }
 
 func SetAuthSession(w http.ResponseWriter, r *http.Request, username string) error {
-	session, _ := store.Get(r, "session-name")
+	session, err := store.Get(r, "session-name")
+	if err != nil {
+		log.Printf("Erreur lors de la récupération de la session: %v", err)
+		return err
+	}
 	session.Values["authenticated"] = true
 	session.Values["username"] = username
-	return session.Save(r, w)
+	if err := session.Save(r, w); err != nil {
+		log.Printf("Erreur lors de la sauvegarde de la session: %v", err)
+		return err
+	}
+	return nil
 }
 
 func ClearAuthSession(w http.ResponseWriter, r *http.Request) error {
-	session, _ := store.Get(r, "session-name")
+	session, err := store.Get(r, "session-name")
+	if err != nil {
+		log.Printf("Erreur lors de la récupération de la session: %v", err)
+		return err
+	}
 	session.Values["authenticated"] = false
 	session.Values["username"] = ""
-	return session.Save(r, w)
+	if err := session.Save(r, w); err != nil {
+		log.Printf("Erreur lors de la sauvegarde de la session: %v", err)
+		return err
+	}
+	return nil
 }

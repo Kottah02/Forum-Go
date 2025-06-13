@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"time"
 	"website/internal/config"
 
@@ -20,7 +21,7 @@ func GetUserByUsername(username string) (User, error) {
 		Scan(&user.ID, &user.Username, &user.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return User{}, nil
+			return User{}, fmt.Errorf("utilisateur non trouvé: %s", username)
 		}
 		return User{}, err
 	}
