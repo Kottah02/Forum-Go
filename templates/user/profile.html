@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - Forum-strike</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     {{template "nav.html" .}}
@@ -12,63 +13,80 @@
     <main class="container">
         <div class="profile-container">
             <h1>Mon Profil</h1>
+
+            <div class="profile-stats">
+                <div class="stat-card">
+                    <div class="stat-value">{{.PostCount}}</div>
+                    <div class="stat-label">Posts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{.CommentCount}}</div>
+                    <div class="stat-label">Commentaires</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{.User.CreatedAt.Format "2006"}}</div>
+                    <div class="stat-label">Année d'inscription</div>
+                </div>
+            </div>
+
             <div class="profile-info">
                 <div class="info-group">
-                    <label>ID Utilisateur:</label>
+                    <label><i class="fas fa-id-card"></i> ID Utilisateur</label>
                     <span>{{.User.ID}}</span>
                 </div>
                 <div class="info-group">
-                    <label>Nom d'utilisateur:</label>
+                    <label><i class="fas fa-user"></i> Nom d'utilisateur</label>
                     <span>{{.User.Username}}</span>
                 </div>
                 <div class="info-group">
-                    <label>Membre depuis:</label>
+                    <label><i class="fas fa-calendar-alt"></i> Membre depuis</label>
                     <span>{{.User.CreatedAt.Format "02 January 2006"}}</span>
-                </div>
-                <div class="info-group">
-                    <label>Nombre de Posts:</label>
-                    <span>{{.PostCount}}</span>
-                </div>
-                <div class="info-group">
-                    <label>Nombre de Commentaires:</label>
-                    <span>{{.CommentCount}}</span>
                 </div>
             </div>
 
             <div class="recent-posts-section">
-                <h2>Mes Derniers Posts</h2>
+                <h2><i class="fas fa-newspaper"></i> Mes Derniers Posts</h2>
                 {{if .RecentPosts}}
                     <div class="posts-list">
                         {{range .RecentPosts}}
                             <div class="post-card">
                                 <h3><a href="/posts/show?id={{.ID}}">{{.Title}}</a></h3>
-                                <p>{{.Content}}</p>
-                                <p class="post-meta">Posté le {{.CreatedAt.Format "02 January 2006 à 15:04"}}</p>
+                                <p class="post-content">{{.Content}}</p>
+                                <div class="post-meta">
+                                    <span class="post-date"><i class="far fa-clock"></i> {{.CreatedAt.Format "02 January 2006 à 15:04"}}</span>
+                                    <span class="stats-badge"><i class="fas fa-thumbs-up"></i> {{.LikeCount}}</span>
+                                </div>
                             </div>
                         {{end}}
                     </div>
                 {{else}}
-                    <p>Vous n'avez pas encore publié de posts.</p>
+                    <p><i class="fas fa-info-circle"></i> Vous n'avez pas encore publié de posts.</p>
                 {{end}}
             </div>
 
             <div class="recent-comments-section">
-                <h2>Mes Derniers Commentaires</h2>
+                <h2><i class="fas fa-comments"></i> Mes Derniers Commentaires</h2>
                 {{if .RecentComments}}
                     <div class="comments-list">
                         {{range .RecentComments}}
                             <div class="comment-card">
                                 <p class="comment-content">{{.Content}}</p>
-                                <p class="comment-meta">Commenté sur <a href="/posts/show?id={{.PostID}}">{{.PostTitle}}</a> le {{.CreatedAt.Format "02 January 2006 à 15:04"}}</p>
+                                <div class="comment-meta">
+                                    <span><i class="fas fa-link"></i> Commenté sur <a href="/posts/show?id={{.PostID}}">{{.PostTitle}}</a></span>
+                                    <span><i class="far fa-clock"></i> {{.CreatedAt.Format "02 January 2006 à 15:04"}}</span>
+                                </div>
                             </div>
                         {{end}}
                     </div>
                 {{else}}
-                    <p>Vous n'avez pas encore publié de commentaires.</p>
+                    <p><i class="fas fa-info-circle"></i> Vous n'avez pas encore publié de commentaires.</p>
                 {{end}}
             </div>
-
         </div>
     </main>
+
+    <footer>
+        <p>&copy; 2024 Forum-strike. Tous droits réservés.</p>
+    </footer>
 </body>
 </html> 

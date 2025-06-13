@@ -720,4 +720,611 @@ nav {
     color: #c5ced1; /* Lighter text for no posts/comments message */
     text-align: center;
     margin-top: 1rem;
+}
+
+/* Posts Container */
+.posts-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.posts-container h1 {
+    color: #de9b35;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Posts List */
+.posts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* Post Card */
+.post-card {
+    background: linear-gradient(145deg, #1a1a1a, #111823);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(93, 121, 174, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-color: rgba(93, 121, 174, 0.3);
+}
+
+.post-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #de9b35, #ccba7c);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.post-card:hover::before {
+    opacity: 1;
+}
+
+.post-card h2 {
+    color: #ccba7c;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.post-content {
+    color: #c5ced1;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Post Meta */
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(93, 121, 174, 0.2);
+    font-size: 0.9rem;
+}
+
+.post-author {
+    color: #5d79ae;
+    font-weight: 500;
+}
+
+.post-date {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* Post Tags */
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+}
+
+.tag {
+    background: rgba(93, 121, 174, 0.2);
+    color: #c5ced1;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(93, 121, 174, 0.3);
+}
+
+.tag:hover {
+    background: rgba(93, 121, 174, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Post Reactions */
+.post-reactions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(93, 121, 174, 0.2);
+}
+
+.reaction-form {
+    margin: 0;
+}
+
+.reaction-btn {
+    background: rgba(93, 121, 174, 0.1);
+    border: 1px solid rgba(93, 121, 174, 0.2);
+    color: #c5ced1;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.reaction-btn:hover:not(:disabled) {
+    background: rgba(93, 121, 174, 0.2);
+    transform: translateY(-1px);
+}
+
+.reaction-btn.active {
+    background: rgba(222, 155, 53, 0.2);
+    border-color: #de9b35;
+    color: #de9b35;
+}
+
+.reaction-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.reaction-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Post Link */
+.post-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Post Creation Form */
+.post-creation {
+    background: linear-gradient(145deg, #1a1a1a, #111823);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(93, 121, 174, 0.1);
+}
+
+.post-creation h2 {
+    color: #de9b35;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.post-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.post-form label {
+    display: block;
+    color: #c5ced1;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.post-form input[type="text"],
+.post-form textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(93, 121, 174, 0.2);
+    border-radius: 8px;
+    color: #c5ced1;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.post-form input[type="text"]:focus,
+.post-form textarea:focus {
+    outline: none;
+    border-color: #de9b35;
+    box-shadow: 0 0 0 2px rgba(222, 155, 53, 0.2);
+}
+
+.post-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* Variables de couleurs CS2 */
+:root {
+    --cs2-blue: #1B2838;      /* Bleu foncé CS2 */
+    --cs2-orange: #F2A900;    /* Orange CS2 */
+    --cs2-gold: #C4A484;      /* Or CS2 */
+    --cs2-light-blue: #66C0F4; /* Bleu clair CS2 */
+    --cs2-dark: #171a21;      /* Fond sombre CS2 */
+    --cs2-gray: #2a475e;      /* Gris CS2 */
+    --cs2-light-gray: #66C0F4; /* Gris clair CS2 */
+    --cs2-text: #C7D5E0;      /* Texte CS2 */
+    --cs2-border: #66C0F4;    /* Bordure CS2 */
+}
+
+/* Posts Container */
+.posts-container h1 {
+    color: var(--cs2-orange);
+    text-shadow: 0 2px 4px rgba(242, 169, 0, 0.3);
+}
+
+/* Post Card */
+.post-card {
+    background: linear-gradient(145deg, var(--cs2-dark), var(--cs2-blue));
+    border: 1px solid rgba(102, 192, 244, 0.1);
+}
+
+.post-card:hover {
+    border-color: rgba(102, 192, 244, 0.3);
+}
+
+.post-card::before {
+    background: linear-gradient(90deg, var(--cs2-orange), var(--cs2-gold));
+}
+
+.post-card h2 {
+    color: var(--cs2-gold);
+}
+
+.post-content {
+    color: var(--cs2-text);
+}
+
+/* Post Meta */
+.post-meta {
+    border-top: 1px solid rgba(102, 192, 244, 0.2);
+}
+
+.post-author {
+    color: var(--cs2-light-blue);
+}
+
+.post-date {
+    color: var(--cs2-light-gray);
+}
+
+/* Post Tags */
+.tag {
+    background: rgba(102, 192, 244, 0.1);
+    color: var(--cs2-text);
+    border: 1px solid rgba(102, 192, 244, 0.3);
+}
+
+.tag:hover {
+    background: rgba(102, 192, 244, 0.2);
+}
+
+/* Post Reactions */
+.post-reactions {
+    border-top: 1px solid rgba(102, 192, 244, 0.2);
+}
+
+.reaction-btn {
+    background: rgba(102, 192, 244, 0.1);
+    border: 1px solid rgba(102, 192, 244, 0.2);
+    color: var(--cs2-text);
+}
+
+.reaction-btn:hover:not(:disabled) {
+    background: rgba(102, 192, 244, 0.2);
+}
+
+.reaction-btn.active {
+    background: rgba(242, 169, 0, 0.2);
+    border-color: var(--cs2-orange);
+    color: var(--cs2-orange);
+}
+
+/* Post Creation Form */
+.post-creation {
+    background: linear-gradient(145deg, var(--cs2-dark), var(--cs2-blue));
+    border: 1px solid rgba(102, 192, 244, 0.1);
+}
+
+.post-creation h2 {
+    color: var(--cs2-orange);
+}
+
+.post-form label {
+    color: var(--cs2-text);
+}
+
+.post-form input[type="text"],
+.post-form textarea {
+    background: rgba(27, 40, 56, 0.5);
+    border: 1px solid rgba(102, 192, 244, 0.2);
+    color: var(--cs2-text);
+}
+
+.post-form input[type="text"]:focus,
+.post-form textarea:focus {
+    border-color: var(--cs2-orange);
+    box-shadow: 0 0 0 2px rgba(242, 169, 0, 0.2);
+}
+
+/* Mise à jour des couleurs spécifiques pour les tags */
+.tag[data-tag="Arme"] {
+    background: rgba(242, 169, 0, 0.2);
+    border-color: var(--cs2-orange);
+    color: var(--cs2-orange);
+}
+
+.tag[data-tag="Skin"] {
+    background: rgba(102, 192, 244, 0.2);
+    border-color: var(--cs2-light-blue);
+    color: var(--cs2-light-blue);
+}
+
+.tag[data-tag="Gameplay"] {
+    background: rgba(196, 164, 132, 0.2);
+    border-color: var(--cs2-gold);
+    color: var(--cs2-gold);
+}
+
+.tag[data-tag="Ynov"] {
+    background: rgba(23, 26, 33, 0.2);
+    border-color: var(--cs2-text);
+    color: var(--cs2-text);
+}
+
+/* Mise à jour des couleurs pour les boutons */
+.btn-primary {
+    background: linear-gradient(to bottom, var(--cs2-orange), #e69a00);
+    border: 1px solid var(--cs2-orange);
+    color: var(--cs2-dark);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to bottom, #e69a00, var(--cs2-orange));
+}
+
+/* Profile Styles */
+.profile-container {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.profile-container h1 {
+    color: var(--cs2-orange);
+    text-align: center;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 4px rgba(242, 169, 0, 0.3);
+}
+
+.profile-info {
+    background: linear-gradient(145deg, var(--cs2-dark), var(--cs2-blue));
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(102, 192, 244, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cs2-orange), var(--cs2-gold));
+}
+
+.info-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(102, 192, 244, 0.1);
+    transition: background-color 0.2s ease;
+}
+
+.info-group:last-child {
+    border-bottom: none;
+}
+
+.info-group:hover {
+    background: rgba(102, 192, 244, 0.05);
+}
+
+.info-group label {
+    color: var(--cs2-light-blue);
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.info-group span {
+    color: var(--cs2-text);
+    font-size: 1.1rem;
+    background: rgba(102, 192, 244, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(102, 192, 244, 0.2);
+}
+
+/* Recent Posts & Comments Sections */
+.recent-posts-section,
+.recent-comments-section {
+    background: linear-gradient(145deg, var(--cs2-dark), var(--cs2-blue));
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(102, 192, 244, 0.1);
+    position: relative;
+}
+
+.recent-posts-section::before,
+.recent-comments-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cs2-orange), var(--cs2-gold));
+}
+
+.recent-posts-section h2,
+.recent-comments-section h2 {
+    color: var(--cs2-orange);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.recent-posts-section .posts-list,
+.recent-comments-section .comments-list {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.recent-posts-section .post-card,
+.recent-comments-section .comment-card {
+    background: rgba(27, 40, 56, 0.5);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid rgba(102, 192, 244, 0.1);
+    transition: all 0.3s ease;
+}
+
+.recent-posts-section .post-card:hover,
+.recent-comments-section .comment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-color: rgba(102, 192, 244, 0.3);
+}
+
+.recent-posts-section .post-card h3,
+.recent-comments-section .comment-card p.comment-content {
+    color: var(--cs2-gold);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.recent-posts-section .post-card h3 a {
+    color: var(--cs2-gold);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.recent-posts-section .post-card h3 a:hover {
+    color: var(--cs2-orange);
+}
+
+.recent-posts-section .post-card p,
+.recent-comments-section .comment-card p.comment-meta {
+    color: var(--cs2-light-blue);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(102, 192, 244, 0.1);
+}
+
+.recent-comments-section .comment-card p.comment-meta a {
+    color: var(--cs2-light-blue);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.recent-comments-section .comment-card p.comment-meta a:hover {
+    color: var(--cs2-orange);
+}
+
+.recent-posts-section p,
+.recent-comments-section p {
+    color: var(--cs2-text);
+    text-align: center;
+    font-style: italic;
+    padding: 2rem;
+    background: rgba(102, 192, 244, 0.05);
+    border-radius: 8px;
+    border: 1px dashed rgba(102, 192, 244, 0.2);
+}
+
+/* Stats Badge */
+.stats-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(242, 169, 0, 0.1);
+    color: var(--cs2-orange);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    border: 1px solid rgba(242, 169, 0, 0.2);
+    font-weight: 500;
+    margin: 0.5rem;
+}
+
+.stats-badge i {
+    font-size: 1.2rem;
+}
+
+/* Profile Stats Grid */
+.profile-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.stat-card {
+    background: linear-gradient(145deg, var(--cs2-dark), var(--cs2-blue));
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(102, 192, 244, 0.1);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(102, 192, 244, 0.3);
+}
+
+.stat-card .stat-value {
+    color: var(--cs2-orange);
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.stat-card .stat-label {
+    color: var(--cs2-text);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 } 
