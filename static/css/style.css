@@ -232,224 +232,95 @@ nav {
     margin: 0 1rem;
 }
 
-/* Profile Page */
-.profile-container {
-    background-color: #1a1a1a; /* Darker background */
-    padding: 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-    max-width: 600px;
-    margin: 3rem auto;
-    text-align: center;
-}
-
-.profile-container h1 {
-    color: #de9b35; /* CS2 orange/gold */
-    margin-bottom: 1.5rem;
-}
-
-.profile-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.info-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1rem;
-    background: #1a1a1a; /* Darker background for info groups */
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-}
-
-.info-group label {
-    font-weight: bold;
-    color: #ccba7c; /* CS2 gold/tan */
-}
-
-.info-group span {
-    color: #c5ced1; /* Lighter text */
-}
-
-.status-active {
-    color: #52ce90 !important; /* Greenish for active status */
-    font-weight: bold;
-}
-
-/* Posts Page */
-.posts-container {
-    background-color: #1a1a1a; /* Darker background */
-    padding: 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-    margin: 3rem auto;
-}
-
-.posts-container h1 {
-    color: #de9b35; /* CS2 orange/gold */
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.post-creation {
-    background-color: #111823; /* Darker background for creation section */
-    padding: 2rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-}
-
-.post-creation h2 {
-    color: #ccba7c; /* CS2 gold/tan */
-    margin-top: 0;
-    margin-bottom: 1.5rem;
-}
-
-.post-form .form-group {
-    margin-bottom: 1.2rem;
-}
-
-.post-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #5d79ae; /* CS2 blue/grey for labels */
-}
-
-.post-form input[type="text"],
-.post-form textarea {
-    width: calc(100% - 20px);
-    padding: 10px;
-    border: 1px solid #413a27; /* Dark brown/grey border */
-    border-radius: 4px;
-    background-color: #111823; /* Darker input background */
-    color: #c5ced1; /* Lighter text for inputs */
-    font-size: 1rem;
-    resize: vertical;
-}
-
-.post-form input[type="text"]:focus,
-.post-form textarea:focus {
-    border-color: #de9b35; /* CS2 orange/gold on focus */
-    outline: none;
-}
-
-.posts-list {
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.post-card {
-    background-color: #111823; /* Darker background for post cards */
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-    display: flex;
-    flex-direction: column;
-}
-
-.post-card h2 {
-    color: #ccba7c; /* CS2 gold/tan */
-    margin-top: 0;
-    margin-bottom: 0.8rem;
-    font-size: 1.5rem;
-}
-
-.post-link {
-    text-decoration: none;
-    color: inherit;
-}
-
-.post-content {
-    font-size: 1rem;
-    color: #c5ced1; /* Lighter text for content */
-    margin-bottom: 1rem;
-    flex-grow: 1;
-}
-
-.post-meta {
-    font-size: 0.9rem;
-    color: #5d79ae; /* CS2 blue/grey */
+/* Home Page Layout */
+.home-content {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #413a27; /* Dark brown/grey border */
+    gap: 2rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
-/* Styles pour les réactions aux posts */
-.post-reactions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid #413a27; /* Dark brown/grey border */
+.home-content .hero {
+    flex: 2; /* Takes more space */
+    min-width: 450px; /* Minimum width for the hero section */
+    padding: 3rem; /* Adjust padding */
+    margin-top: 0; /* Remove top margin from hero when in home-content */
 }
 
-.reaction-form {
-    margin: 0;
-}
-
-.reaction-btn {
-    background: none;
-    border: 1px solid #5d79ae; /* CS2 blue/grey border */
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    display: flex;
+/* Carousel Styles */
+.carousel-container {
+    flex: 1; /* Takes remaining space */
+    min-width: 300px; /* Minimum width for the carousel */
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+    background-color: #1a1a1a; /* Dark background for carousel container */
+    display: flex; /* To center content */
     align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-    color: #c5ced1; /* Lighter text */
+    justify-content: center;
+    height: 300px; /* Set a fixed height for the carousel container */
 }
 
-.reaction-btn:hover:not(:disabled) {
-    background-color: #413a27; /* Dark brown/grey on hover */
+.carousel-slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%; /* Make slide take full height of container */
 }
 
-.reaction-btn.active {
-    background-color: #de9b35; /* CS2 orange/gold when active */
-    border-color: #de9b35; /* CS2 orange/gold border when active */
-    color: #111823; /* Dark text for contrast */
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Ensure images fit within their container without cropping */
+    display: block;
+    border-radius: 8px; /* Match container border-radius */
 }
 
-.reaction-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1.5rem;
+    z-index: 100;
+    border-radius: 5px; /* Slightly rounded buttons */
 }
 
-.reaction-count {
-    font-size: 0.9rem;
-    font-weight: 500;
+.carousel-button.prev {
+    left: 10px;
 }
 
-/* Style pour le bouton like actif */
-.reaction-btn[value="like"].active {
-    background-color: #52ce90; /* Greenish for like active */
-    border-color: #52ce90; /* Greenish border for like active */
-    color: #111823; /* Dark text for contrast */
+.carousel-button.next {
+    right: 10px;
 }
 
-/* Style pour le bouton dislike actif */
-.reaction-btn[value="dislike"].active {
-    background-color: #dc626d; /* Reddish for dislike active */
-    border-color: #dc626d; /* Reddish border for dislike active */
-    color: #111823; /* Dark text for contrast */
+.carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Footer */
-footer {
-    background-color: #111823; /* Darker background */
-    color: #5d79ae; /* CS2 blue/grey */
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: 3rem;
-    border-top: 2px solid #413a27; /* Dark brown/grey border */
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+    .home-content {
+        flex-direction: column; /* Stack hero and carousel vertically */
+        align-items: center;
+    }
+
+    .home-content .hero,
+    .carousel-container {
+        width: 90%; /* Take more width on smaller screens */
+        max-width: 600px; /* Limit max width */
+        min-width: auto; /* Remove min-width constraint */
+    }
+
+    .home-content .hero {
+        margin-bottom: 2rem; /* Add space between stacked sections */
+    }
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -548,6 +419,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .info-group {
@@ -557,6 +429,7 @@ footer {
     padding: 1rem;
     background: #1a1a1a; /* Darker background for info groups */
     border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .info-group label {

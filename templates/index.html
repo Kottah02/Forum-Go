@@ -10,16 +10,31 @@
     {{template "nav.html" .}}
     
     <main class="container">
-        <section class="hero">
-            <h1>Bienvenue sur Forum-strike</h1>
-            <p>Votre Forum dédié a Counter Strike 2</p>
-            {{if not .IsAuthenticated}}
-                <div class="cta-buttons">
-                    <a href="/login" class="btn btn-primary">Se connecter</a>
-                    <a href="/register" class="btn btn-secondary">S'inscrire</a>
+        <section class="home-content">
+            <section class="hero">
+                <h1>Bienvenue sur Forum-strike</h1>
+                <p>Votre Forum dédié a Counter Strike 2</p>
+                {{if not .IsAuthenticated}}
+                    <div class="cta-buttons">
+                        <a href="/login" class="btn btn-primary">Se connecter</a>
+                        <a href="/register" class="btn btn-secondary">S'inscrire</a>
+                    </div>
+                {{end}}
+            </section>
+
+            <section class="carousel-container">
+                <div class="carousel-slide">
+                    <img src="/static/images/bleu.jpg" alt="AK-47 Skin 1">
+                    <img src="/static/images/asimov.jpg" alt="AK-47 Skin 2">
+                    <img src="/static/images/rouge.jpg" alt="AK-47 Skin 3">
+                    <img src="/static/images/heritage.jpg" alt="AK-47 Skin 4">
+                    <img src="/static/images/win.jpg" alt="AK-47 Skin 5">
                 </div>
-            {{end}}
+                <button class="carousel-button prev">&#10094;</button>
+                <button class="carousel-button next">&#10095;</button>
+            </section>
         </section>
     </main>
+    <script src="/static/js/carousel.js"></script>
 </body>
 </html> 
