@@ -1,0 +1,19 @@
+<header>
+    <nav>
+        <div class="logo-container">
+            <img src="/static/images/csgo2-logo.png" alt="CS:GO2 Logo" class="site-logo">
+            <div class="logo">Global Elite Forums</div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/" {{if eq .ActivePage "index"}}class="active"{{end}}>Accueil</a></li>
+            {{if .IsAuthenticated}}
+                <li><a href="/profile" {{if eq .ActivePage "user/profile"}}class="active"{{end}}>Mon Profil</a></li>
+                <li><a href="/posts" {{if eq .ActivePage "posts/list"}}class="active"{{end}}>Posts</a></li>
+                <li><a href="/logout">Déconnexion</a></li>
+            {{else}}
+                <li><a href="/login" {{if eq .ActivePage "auth/login"}}class="active"{{end}}>Connexion</a></li>
+                <li><a href="/register" {{if eq .ActivePage "auth/register"}}class="active"{{end}}>Inscription</a></li>
+            {{end}}
+        </ul>
+    </nav>
+</header> 

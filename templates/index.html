@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil - Forum-strike</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {{template "nav.html" .}}
+    
+    <main class="container">
+        <section class="hero">
+            <h1>Bienvenue sur Forum-strike</h1>
+            <p>Votre plateforme de partage et de découverte</p>
+            {{if not .IsAuthenticated}}
+                <div class="cta-buttons">
+                    <a href="/login" class="btn btn-primary">Se connecter</a>
+                    <a href="/register" class="btn btn-secondary">S'inscrire</a>
+                </div>
+            {{end}}
+        </section>
+    </main>
+</body>
+</html> 

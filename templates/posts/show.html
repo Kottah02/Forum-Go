@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Post.Title}} - Forum-strike</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {{template "nav.html" .}}
+
+    <main class="container">
+        <div class="posts-container">
+            <article class="post-card">
+                <h1>{{.Post.Title}}</h1>
+                <p class="post-content">{{.Post.Content}}</p>
+                <div class="post-meta">
+                    <span class="post-author">Par {{.Post.Author}}</span>
+                    <span class="post-date">{{.Post.CreatedAt.Format "02/01/2006 15:04"}}</span>
+                </div>
+                {{if .IsAuthenticated}}
+                <div class="post-reactions">
+                    <form action="/posts/{{.Post.ID}}/react" method="POST" class="reaction-form">
+                        <input type="hidden" name="reaction_type" value="like">
+                        <button type="submit" class="reaction-btn {{if eq .Post.UserReaction "like"}}active{{end}}" {{if eq .Post.UserReaction "dislike"}}disabled{{end}}>
+                            👍 <span class="reaction-count">{{.Post.LikeCount}}</span>
+                        </button>
+                    </form>
+                    <form action="/posts/{{.Post.ID}}/react" method="POST" class="reaction-form">
+                        <input type="hidden" name="reaction_type" value="dislike">
+                        <button type="submit" class="reaction-btn {{if eq .Post.UserReaction "dislike"}}active{{end}}" {{if eq .Post.UserReaction "like"}}disabled{{end}}>
+                            👎 <span class="reaction-count">{{.Post.DislikeCount}}</span>
+                        </button>
+                    </form>
+                </div>
+                {{end}}
+            </article>
+
+            <div class="comments-section">
+                <h2>Commentaires</h2>
+                {{if .IsAuthenticated}}
+                <div class="comment-creation">
+                    <form action="/posts/add-comment?id={{.Post.ID}}" method="POST" class="comment-form">
+                        <div class="form-group">
+                            <label for="content">Ajouter un commentaire</label>
+                            <textarea id="content" name="content" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Commenter</button>
+                    </form>
+                </div>
+                {{end}}
+
+                <div class="comments-list">
+                    {{range .Comments}}
+                    <div class="comment-card">
+                        <p class="comment-content">{{.Content}}</p>
+                        <div class="comment-meta">
+                            <span class="comment-author">Par {{.Author}}</span>
+                            <span class="comment-date">{{.CreatedAt.Format "02/01/2006 15:04"}}</span>
+                        </div>
+                    </div>
+                    {{else}}
+                    <p>Aucun commentaire pour le moment.</p>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Mon Site Web. Tous droits réservés.</p>
+    </footer>
+</body>
+</html> 

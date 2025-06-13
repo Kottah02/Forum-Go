@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts - Forum-strike</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {{template "nav.html" .}}
+
+    <main>
+        <div class="posts-container">
+            <h1>Posts</h1>
+            
+            {{if .IsAuthenticated}}
+            <div class="post-creation">
+                <h2>Créer un nouveau post</h2>
+                <form action="/posts/create" method="POST" class="post-form">
+                    <div class="form-group">
+                        <label for="title">Titre</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Contenu</label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publier</button>
+                </form>
+            </div>
+            {{end}}
+
+            <div class="posts-list">
+                <h1>Exemple de post</h1>
+                {{range .Posts}}
+                <article class="post-card">
+                    <h2>{{.Title}}</h2>
+                    <p class="post-content">{{.Content}}</p>
+                    <div class="post-meta">
+                        <span class="post-author">Par {{.Author}}</span>
+                        <span class="post-date">{{.CreatedAt.Format "02/01/2006 15:04"}}</span>
+                    </div>
+                    {{if $.IsAuthenticated}}
+                    <div class="post-reactions">
+                        <form action="/posts/{{.ID}}/react" method="POST" class="reaction-form">
+                            <input type="hidden" name="reaction_type" value="like">
+                            <button type="submit" class="reaction-btn {{if eq .UserReaction "like"}}active{{end}}" {{if eq .UserReaction "dislike"}}disabled{{end}}>
+                                👍 <span class="reaction-count">{{.LikeCount}}</span>
+                            </button>
+                        </form>
+                        <form action="/posts/{{.ID}}/react" method="POST" class="reaction-form">
+                            <input type="hidden" name="reaction_type" value="dislike">
+                            <button type="submit" class="reaction-btn {{if eq .UserReaction "dislike"}}active{{end}}" {{if eq .UserReaction "like"}}disabled{{end}}>
+                                👎 <span class="reaction-count">{{.DislikeCount}}</span>
+                            </button>
+                        </form>
+                    </div>
+                    {{end}}
+                </article>
+                {{end}}
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Mon Site Web. Tous droits réservés.</p>
+    </footer>
+</body>
+</html> 

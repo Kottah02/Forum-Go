@@ -1,0 +1,690 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Header et Navigation */
+header {
+    background-color: #1a1a1a;
+    padding: 1rem 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.site-logo {
+    height: 50px;
+    width: 50px;
+    filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.site-logo:hover {
+    transform: scale(1.05);
+}
+
+.logo {
+    color: #ffd700;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-links li {
+    margin-left: 2rem;
+}
+
+.nav-links a {
+    color: #c0c0c0;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #4CAF50;
+}
+
+/* Boutons */
+.btn {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: #1a1a1a;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.btn-primary {
+    background-color: #FF5722;
+}
+
+.btn-primary:hover {
+    background-color: #e64a19;
+}
+
+.btn-secondary {
+    background-color: #555;
+    color: #eee;
+}
+
+.btn-secondary:hover {
+    background-color: #666;
+}
+
+/* Formulaires d'authentification */
+.auth-container {
+    background-color: #2a2a2a;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.auth-container h1 {
+    color: #ffd700;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #c0c0c0;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #3a3a3a;
+    color: #eee;
+    font-size: 1rem;
+}
+
+.auth-form input[type="text"]:focus,
+.auth-form input[type="password"]:focus {
+    border-color: #FF5722;
+    outline: none;
+}
+
+.auth-links {
+    margin-top: 1.5rem;
+    color: #c0c0c0;
+}
+
+.auth-links a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #f44336;
+    background-color: #ffcdd2;
+    padding: 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.success-message {
+    color: #4CAF50;
+    background-color: #c8e6c9;
+    padding: 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+/* Hero Section (Homepage) */
+.hero {
+    text-align: center;
+    padding: 5rem 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://via.placeholder.com/1200x500/000000/FFFFFF?text=CS:GO2+Background') no-repeat center center/cover;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    color: #ffd700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.hero p {
+    font-size: 1.4rem;
+    color: #c0c0c0;
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    margin-top: 2rem;
+}
+
+.cta-buttons a {
+    margin: 0 1rem;
+}
+
+/* Profile Page */
+.profile-container {
+    background-color: #2a2a2a;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    max-width: 600px;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.profile-container h1 {
+    color: #ffd700;
+    margin-bottom: 1.5rem;
+}
+
+.profile-info p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Posts Page */
+.posts-container {
+    background-color: #2a2a2a;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    margin: 3rem auto;
+}
+
+.posts-container h1 {
+    color: #ffd700;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.post-creation {
+    background-color: #3a3a3a;
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.post-creation h2 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+.post-form .form-group {
+    margin-bottom: 1.2rem;
+}
+
+.post-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #c0c0c0;
+}
+
+.post-form input[type="text"],
+.post-form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #4a4a4a;
+    color: #eee;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.post-form input[type="text"]:focus,
+.post-form textarea:focus {
+    border-color: #FF5722;
+    outline: none;
+}
+
+.posts-list {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.post-card {
+    background-color: #3a3a3a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+}
+
+.post-card h2 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1.5rem;
+}
+
+.post-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.post-content {
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+}
+
+.post-meta {
+    font-size: 0.9rem;
+    color: #c0c0c0;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+/* Styles pour les réactions aux posts */
+.post-reactions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #444;
+}
+
+.reaction-form {
+    margin: 0;
+}
+
+.reaction-btn {
+    background: none;
+    border: 1px solid #666;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    color: #e0e0e0;
+}
+
+.reaction-btn:hover:not(:disabled) {
+    background-color: #4a4a4a;
+}
+
+.reaction-btn.active {
+    background-color: #FF5722;
+    border-color: #e64a19;
+    color: #1a1a1a;
+}
+
+.reaction-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.reaction-count {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Style pour le bouton like actif */
+.reaction-btn[value="like"].active {
+    background-color: #4CAF50;
+    border-color: #45a049;
+    color: #1a1a1a;
+}
+
+/* Style pour le bouton dislike actif */
+.reaction-btn[value="dislike"].active {
+    background-color: #FF5722;
+    border-color: #e64a19;
+    color: #1a1a1a;
+}
+
+/* Footer */
+footer {
+    background-color: #2a2a2a;
+    color: #c0c0c0;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 3rem;
+    border-top: 2px solid #333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .features {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+}
+
+/* Styles pour la page de connexion */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.login-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-form h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #2c3e50;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.login-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #2980b9;
+}
+
+/* Styles pour la page de profil */
+.profile-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+.profile-card h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.info-group label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.info-group span {
+    color: #666;
+}
+
+.status-active {
+    color: #2ecc71 !important;
+    font-weight: bold;
+}
+
+/* Styles pour la page d'inscription */
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    margin-top: 60px;
+}
+
+.register-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 500px;
+}
+
+.register-form h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.register-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.register-form .form-group small {
+    display: block;
+    color: #666;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+}
+
+.register-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.register-button:hover {
+    background-color: #27ae60;
+}
+
+.login-link {
+    text-align: center;
+    color: #666;
+}
+
+.login-link a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* Styles pour la section des commentaires */
+.comments-section {
+    background-color: #2a2a2a;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    margin-top: 2rem;
+}
+
+.comments-section h2 {
+    color: #ffd700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.comment-creation {
+    background-color: #3a3a3a;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.comment-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.comment-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #c0c0c0;
+}
+
+.comment-form textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #4a4a4a;
+    color: #eee;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.comment-card {
+    background-color: #3a3a3a;
+    padding: 1.2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.comment-content {
+    font-size: 1rem;
+    color: #e0e0e0;
+    margin-bottom: 0.8rem;
+}
+
+.comment-meta {
+    font-size: 0.85rem;
+    color: #c0c0c0;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #444;
+    padding-top: 0.8rem;
+    margin-top: 0.8rem;
+} 
