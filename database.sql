@@ -41,16 +41,3 @@ CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- Insertion de l'utilisateur test
--- Le mot de passe est "test" hashé avec bcrypt
-INSERT INTO users (username, password) VALUES 
-('test', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy')
-ON DUPLICATE KEY UPDATE username=username;
-
--- Insertion du post de test
-INSERT INTO posts (user_id, title, content) 
-SELECT id, 'Pourquoi Cyril est beau', 'Pourquoi pas finalement'
-FROM users 
-WHERE username = 'test'
-ON DUPLICATE KEY UPDATE title=title; 

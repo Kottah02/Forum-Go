@@ -32,7 +32,8 @@ func (c *PostController) List(w http.ResponseWriter, r *http.Request) {
 		user, err := models.GetUserByUsername(username)
 		if err != nil {
 			log.Printf("Error getting user by username %s: %v", username, err)
-			http.Error(w, "Erreur lors de la récupération de l'utilisateur", http.StatusInternalServerError)
+			middleware.ClearAuthSession(w, r)
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 		log.Printf("Successfully retrieved user: %s (ID: %d)", user.Username, user.ID)
@@ -109,6 +110,8 @@ func (c *PostController) Create(w http.ResponseWriter, r *http.Request) {
 	user, err := models.GetUserByUsername(username)
 	if err != nil {
 		http.Error(w, "Erreur lors de la récupération de l'utilisateur", http.StatusInternalServerError)
+		middleware.ClearAuthSession(w, r)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
@@ -149,6 +152,8 @@ func (c *PostController) React(w http.ResponseWriter, r *http.Request) {
 	user, err := models.GetUserByUsername(username)
 	if err != nil {
 		http.Error(w, "Erreur lors de la récupération de l'utilisateur", http.StatusInternalServerError)
+		middleware.ClearAuthSession(w, r)
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return
 	}
 
