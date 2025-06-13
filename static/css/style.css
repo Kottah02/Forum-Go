@@ -202,7 +202,114 @@ nav {
     font-weight: bold;
 }
 
-/* Hero Section (Homepage) */
+/* Home Page Layout */
+.home-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 0; /* Supprime l'espace entre les éléments */
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding: 0; /* Supprime le padding */
+    max-width: 100%; /* Assure que le conteneur prend toute la largeur */
+}
+
+.home-welcome {
+    flex: 2;
+    min-width: 400px;
+    padding: 3rem;
+    margin: 0 2rem; /* Ajoute une marge sur les côtés */
+    order: 2;
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+    border-radius: 8px;
+}
+
+.carousel-container {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-top: 2rem;
+    order: 1;
+    margin-left: 0;
+    transform: translateX(-20px); /* Déplace légèrement vers la gauche */
+}
+
+.carousel-container.right-carousel {
+    order: 3;
+    margin-right: 0;
+    transform: translateX(20px); /* Déplace légèrement vers la droite */
+}
+
+.carousel-slide {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* Cache les boutons de navigation */
+.carousel-button {
+    display: none; /* Cache les boutons de navigation */
+}
+
+@media (max-width: 1200px) {
+    .home-layout {
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .home-welcome {
+        flex: 1 1 100%;
+        max-width: 800px;
+        margin: 0 1rem; /* Réduit la marge sur les écrans moyens */
+    }
+
+    .carousel-container {
+        flex: 0 0 300px;
+        transform: none; /* Annule le déplacement sur les écrans moyens */
+    }
+
+    .carousel-container.right-carousel {
+        transform: none; /* Annule le déplacement sur les écrans moyens */
+    }
+}
+
+@media (max-width: 1024px) {
+    .home-layout {
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+
+    .home-welcome {
+        order: 1;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .carousel-container.left-carousel {
+        order: 2;
+        margin: 1rem auto;
+    }
+
+    .carousel-container.right-carousel {
+        order: 3;
+        margin: 1rem auto;
+    }
+}
+
+/* Ensure the original hero styles are not accidentally removed */
+/* The following styles are specifically for the .hero class when it's NOT inside home-layout */
+/* If .hero is only used within .home-layout, these can be merged or removed */
 .hero {
     text-align: center;
     padding: 5rem 0;
@@ -230,114 +337,6 @@ nav {
 
 .cta-buttons a {
     margin: 0 1rem;
-}
-
-/* Home Page Layout */
-.home-content {
-    display: flex;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-}
-
-.home-content .hero {
-    flex: 2; /* Takes more space */
-    min-width: 450px; /* Minimum width for the hero section */
-    padding: 3rem; /* Adjust padding */
-    margin-top: 0; /* Remove top margin from hero when in home-content */
-}
-
-/* Carousel Styles */
-.carousel-container {
-    flex: 1; /* Takes remaining space */
-    min-width: 300px; /* Minimum width for the carousel */
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
-    background-color: #1a1a1a; /* Dark background for carousel container */
-    display: flex; /* To center content */
-    align-items: center;
-    justify-content: center;
-    height: 300px; /* Set a fixed height for the carousel container */
-}
-
-.carousel-slide {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    height: 100%; /* Make slide take full height of container */
-}
-
-.carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Ensure images fit within their container without cropping */
-    display: block;
-    border-radius: 8px; /* Match container border-radius */
-}
-
-.carousel-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 1.5rem;
-    z-index: 100;
-    border-radius: 5px; /* Slightly rounded buttons */
-}
-
-.carousel-button.prev {
-    left: 10px;
-}
-
-.carousel-button.next {
-    right: 10px;
-}
-
-.carousel-button:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-/* Media queries for responsiveness */
-@media (max-width: 1024px) {
-    .home-content {
-        flex-direction: column; /* Stack hero and carousel vertically */
-        align-items: center;
-    }
-
-    .home-content .hero,
-    .carousel-container {
-        width: 90%; /* Take more width on smaller screens */
-        max-width: 600px; /* Limit max width */
-        min-width: auto; /* Remove min-width constraint */
-    }
-
-    .home-content .hero {
-        margin-bottom: 2rem; /* Add space between stacked sections */
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .hero h1 {
-        font-size: 2rem;
-    }
-    
-    .hero p {
-        font-size: 1rem;
-    }
-    
-    .features {
-        grid-template-columns: 1fr;
-        padding: 1rem;
-    }
 }
 
 /* Styles pour la page de connexion */

@@ -1,42 +1,54 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelector('.carousel-slide');
-    const images = document.querySelectorAll('.carousel-slide img');
-    const prevButton = document.querySelector('.carousel-button.prev');
-    const nextButton = document.querySelector('.carousel-button.next');
+    const carouselContainers = document.querySelectorAll('.carousel-container');
 
-    if (images.length === 0) {
-        console.error("Aucune image trouvée dans le carrousel.");
-        return;
-    }
+    carouselContainers.forEach(container => {
+        const slides = container.querySelector('.carousel-slide');
+        const images = container.querySelectorAll('.carousel-slide img');
+        const prevButton = container.querySelector('.carousel-button.prev');
+        const nextButton = container.querySelector('.carousel-button.next');
 
-    // Attendre que la première image soit chargée pour obtenir la bonne largeur
-    images[0].onload = () => {
+        if (images.length === 0) {
+            console.error("Aucune image trouvée dans le carrousel.", container);
+            return;
+        }
+
         let currentIndex = 0;
-        const imageWidth = images[0].clientWidth;
+        let imageWidth = 0;
 
+        // Function to update carousel position
         function updateCarousel() {
             slides.style.transform = `translateX(${-currentIndex * imageWidth}px)`;
         }
 
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+        // Set initial image width and start carousel
+        const initializeCarousel = () => {
+            // Ensure imageWidth is calculated based on the first image of THIS carousel
+            imageWidth = images[0].clientWidth;
             updateCarousel();
-        });
 
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-            updateCarousel();
-        });
+            prevButton.addEventListener('click', () => {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1;
+                updateCarousel();
+            });
 
-        // Optional: Auto-play carousel
-        setInterval(() => {
-            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-            updateCarousel();
-        }, 2500); // Change image every 5 seconds
-    };
+            nextButton.addEventListener('click', () => {
+                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                updateCarousel();
+            });
 
-    // Si les images sont déjà en cache ou chargées, déclencher manuellement l'onload
-    if (images[0].complete) {
-        images[0].onload();
-    }
+            // Optional: Auto-play carousel
+            setInterval(() => {
+                currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                updateCarousel();
+            }, 2500); // Change image every 2.5 seconds
+        };
+
+        // Wait for the first image of the current carousel to load
+        images[0].onload = initializeCarousel;
+
+        // If images are already cached or loaded, manually trigger initialization
+        if (images[0].complete) {
+            initializeCarousel();
+        }
+    });
 }); 

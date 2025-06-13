@@ -10,8 +10,19 @@
     {{template "nav.html" .}}
     
     <main class="container">
-        <section class="home-content">
-            <section class="hero">
+        <section class="home-layout">
+            <section class="carousel-container left-carousel">
+                <div class="carousel-slide">
+                    <img src="/static/images/blanc.png" alt="Skin 1">
+                    <img src="/static/images/eau.png" alt="Skin 2">
+                    <img src="/static/images/dino.png" alt="Skin 3">
+                    <img src="/static/images/jaune.png" alt="Skin 4">
+                </div>
+                <button class="carousel-button prev">&#10094;</button>
+                <button class="carousel-button next">&#10095;</button>
+            </section>
+
+            <section class="hero home-welcome">
                 <h1>Bienvenue sur Forum-strike</h1>
                 <p>Votre Forum dédié a Counter Strike 2</p>
                 {{if not .IsAuthenticated}}
@@ -22,13 +33,13 @@
                 {{end}}
             </section>
 
-            <section class="carousel-container">
+            <section class="carousel-container right-carousel">
                 <div class="carousel-slide">
-                    <img src="/static/images/bleu.jpg" alt="AK-47 Skin 1">
-                    <img src="/static/images/asimov.jpg" alt="AK-47 Skin 2">
-                    <img src="/static/images/rouge.jpg" alt="AK-47 Skin 3">
-                    <img src="/static/images/heritage.jpg" alt="AK-47 Skin 4">
-                    <img src="/static/images/win.jpg" alt="AK-47 Skin 5">
+                    <img src="/static/images/bleu.png" alt="AK-47 Skin 1">
+                    <img src="/static/images/asimov.png" alt="AK-47 Skin 2">
+                    <img src="/static/images/rouge.png" alt="AK-47 Skin 3">
+                    <img src="/static/images/heritage.png" alt="AK-47 Skin 4">
+                    <img src="/static/images/win.png" alt="AK-47 Skin 5">
                 </div>
                 <button class="carousel-button prev">&#10094;</button>
                 <button class="carousel-button next">&#10095;</button>
