@@ -212,3 +212,119 @@ func GetPostByID(id int) (*Post, error) {
 
 	return post, nil
 }
+
+func GetPostCountByUserID(userID int) (int, error) {
+	var count int
+	err := config.DB.QueryRow("SELECT COUNT(*) FROM posts WHERE user_id = ?", userID).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+func GetRecentPostsByUserID(userID int, limit int) ([]Post, error) {
+	query := `
+		SELECT 
+			p.id, 
+			p.title, 
+			p.content, 
+			u.username, 
+			p.created_at,
+			COALESCE((SELECT COUNT(*) FROM post_reactions WHERE post_id = p.id AND reaction_type = 'like'), 0) as like_count,
+			COALESCE((SELECT COUNT(*) FROM post_reactions WHERE post_id = p.id AND reaction_type = 'dislike'), 0) as dislike_count
+		FROM posts p
+		JOIN users u ON p.user_id = u.id
+		WHERE p.user_id = ?
+		ORDER BY p.created_at DESC
+		LIMIT ?
+	`
+
+	rows, err := config.DB.Query(query, userID, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var post Post
+		var createdAt time.Time
+		err := rows.Scan(
+			&post.ID,
+			&post.Title,
+			&post.Content,
+			&post.Author,
+			&createdAt,
+			&post.LikeCount,
+			&post.DislikeCount,
+		)
+		if err != nil {
+			return nil, err
+		}
+		post.CreatedAt = createdAt
+
+		// Récupérer les tags du post
+		tags, err := GetPostTags(post.ID)
+		if err != nil {
+			return nil, err
+		}
+		post.Tags = tags
+
+		posts = append(posts, post)
+	}
+
+	return posts, rows.Err()
+}
+
+func GetAllPostsByUserID(userID int) ([]Post, error) {
+	query := `
+		SELECT 
+			p.id, 
+			p.title, 
+			p.content, 
+			u.username, 
+			p.created_at,
+			COALESCE((SELECT COUNT(*) FROM post_reactions WHERE post_id = p.id AND reaction_type = 'like'), 0) as like_count,
+			COALESCE((SELECT COUNT(*) FROM post_reactions WHERE post_id = p.id AND reaction_type = 'dislike'), 0) as dislike_count
+		FROM posts p
+		JOIN users u ON p.user_id = u.id
+		WHERE p.user_id = ?
+		ORDER BY p.created_at DESC
+	`
+
+	rows, err := config.DB.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var post Post
+		var createdAt time.Time
+		err := rows.Scan(
+			&post.ID,
+			&post.Title,
+			&post.Content,
+			&post.Author,
+			&createdAt,
+			&post.LikeCount,
+			&post.DislikeCount,
+		)
+		if err != nil {
+			return nil, err
+		}
+		post.CreatedAt = createdAt
+
+		// Récupérer les tags du post
+		tags, err := GetPostTags(post.ID)
+		if err != nil {
+			return nil, err
+		}
+		post.Tags = tags
+
+		posts = append(posts, post)
+	}
+
+	return posts, rows.Err()
+}
