@@ -23,7 +23,12 @@ body {
 
 /* Header et Navigation */
 header {
-    background-color: #111823; /* Slightly lighter than body background */
+    background: linear-gradient(225deg,
+        #121f2b 0%,
+        #182737 25%,
+        #204669 50%,
+        #1e4e73 75%,
+        #325996 100%); /* Dégradé avec bleu final encore plus sombre */
     padding: 1rem 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     position: sticky;
@@ -254,6 +259,13 @@ nav {
     height: 100%;
     object-fit: cover;
     flex-shrink: 0;
+    background: linear-gradient(to bottom, 
+        #de9b35 0%,
+        #d48f2e 20%,
+        #b87c2a 40%,
+        #a06a25 60%,
+        #8c5e1f 80%,
+        #7a4d1a 100%); /* Dégradé orange pour les armes */
 }
 
 /* Cache les boutons de navigation */
