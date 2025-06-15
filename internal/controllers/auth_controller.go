@@ -5,8 +5,6 @@ import (
 	"strings"
 	"website/internal/middleware"
 	"website/internal/models"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthController struct{}
@@ -46,41 +44,91 @@ func (c *AuthController) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.Method == "POST" {
-		username := strings.TrimSpace(r.FormValue("username"))
-		password := r.FormValue("password")
-		confirmPassword := r.FormValue("confirm-password")
+	if r.Method != "POST" {
+		renderTemplate(w, r, "auth/register", nil)
+		return
+	}
 
-		errorMsg, isValid := validateRegistration(username, password, confirmPassword)
-		if !isValid {
-			renderTemplate(w, r, "auth/register", map[string]interface{}{
-				"Error": errorMsg,
-			})
-			return
-		}
+	username := strings.TrimSpace(r.FormValue("username"))
+	email := strings.TrimSpace(r.FormValue("email"))
+	password := r.FormValue("password")
+	confirmPassword := r.FormValue("confirm-password")
 
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-		if err != nil {
-			renderTemplate(w, r, "auth/register", map[string]interface{}{
-				"Error": "Une erreur est survenue lors de l'inscription",
-			})
-			return
-		}
-
-		if err := models.CreateUser(username, string(hashedPassword)); err != nil {
-			renderTemplate(w, r, "auth/register", map[string]interface{}{
-				"Error": "Une erreur est survenue lors de l'inscription",
-			})
-			return
-		}
-
+	// Validation des champs
+	if username == "" || email == "" || password == "" {
 		renderTemplate(w, r, "auth/register", map[string]interface{}{
-			"Success": "Inscription réussie ! Vous pouvez maintenant vous connecter.",
+			"Error": "Tous les champs sont obligatoires",
 		})
 		return
 	}
 
-	renderTemplate(w, r, "auth/register", nil)
+	// Validation basique de l'email
+	if !strings.Contains(email, "@") || !strings.Contains(email, ".") {
+		renderTemplate(w, r, "auth/register", map[string]interface{}{
+			"Error": "L'adresse email n'est pas valide",
+		})
+		return
+	}
+
+	if password != confirmPassword {
+		renderTemplate(w, r, "auth/register", map[string]interface{}{
+			"Error": "Les mots de passe ne correspondent pas",
+		})
+		return
+	}
+
+	// Vérifier si l'utilisateur existe déjà
+	exists, err := models.UserExists(username)
+	if err != nil {
+		http.Error(w, "Erreur lors de la vérification de l'utilisateur", http.StatusInternalServerError)
+		return
+	}
+	if exists {
+		renderTemplate(w, r, "auth/register", map[string]interface{}{
+			"Error": "Ce nom d'utilisateur est déjà pris",
+		})
+		return
+	}
+
+	// Vérifier si l'email existe déjà
+	emailExists, err := models.EmailExists(email)
+	if err != nil {
+		http.Error(w, "Erreur lors de la vérification de l'email", http.StatusInternalServerError)
+		return
+	}
+	if emailExists {
+		renderTemplate(w, r, "auth/register", map[string]interface{}{
+			"Error": "Cette adresse email est déjà utilisée",
+		})
+		return
+	}
+
+	// Créer l'utilisateur
+	err = models.CreateUser(username, email, password)
+	if err != nil {
+		var errorMessage string
+		switch err {
+		case models.ErrPasswordTooShort:
+			errorMessage = "Le mot de passe doit contenir au moins 12 caractères"
+		case models.ErrPasswordNoUpper:
+			errorMessage = "Le mot de passe doit contenir au moins une majuscule"
+		case models.ErrPasswordNoLower:
+			errorMessage = "Le mot de passe doit contenir au moins une minuscule"
+		case models.ErrPasswordNoNumber:
+			errorMessage = "Le mot de passe doit contenir au moins un chiffre"
+		case models.ErrPasswordNoSpecial:
+			errorMessage = "Le mot de passe doit contenir au moins un caractère spécial"
+		default:
+			errorMessage = "Erreur lors de la création du compte"
+		}
+		renderTemplate(w, r, "auth/register", map[string]interface{}{
+			"Error": errorMessage,
+		})
+		return
+	}
+
+	// Rediriger vers la page de connexion
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func (c *AuthController) Logout(w http.ResponseWriter, r *http.Request) {

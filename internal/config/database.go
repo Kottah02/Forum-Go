@@ -50,6 +50,7 @@ func createTables() {
 	CREATE TABLE IF NOT EXISTS users (
 		id INT AUTO_INCREMENT PRIMARY KEY,
 		username VARCHAR(50) UNIQUE NOT NULL,
+		email VARCHAR(191) UNIQUE NOT NULL,
 		password VARCHAR(255) NOT NULL,
 		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 	);`
@@ -121,6 +122,27 @@ func createTables() {
 		}
 	}
 
+	// Migration pour ajouter le champ email s'il n'existe pas
+	var columnExists bool
+	err := DB.QueryRow(`
+		SELECT COUNT(*) > 0
+		FROM information_schema.COLUMNS 
+		WHERE TABLE_SCHEMA = DATABASE()
+		AND TABLE_NAME = 'users' 
+		AND COLUMN_NAME = 'email'
+	`).Scan(&columnExists)
+
+	if err != nil {
+		log.Printf("Erreur lors de la vérification de la colonne email: %v", err)
+	} else if !columnExists {
+		_, err = DB.Exec("ALTER TABLE users ADD COLUMN email VARCHAR(191) UNIQUE NOT NULL AFTER username")
+		if err != nil {
+			log.Printf("Erreur lors de l'ajout de la colonne email: %v", err)
+		} else {
+			log.Println("Colonne email ajoutée avec succès")
+		}
+	}
+
 	// Insertion des tags par défaut
 	insertDefaultTagsSQL := `
 	INSERT IGNORE INTO tags (name) VALUES 
@@ -129,7 +151,7 @@ func createTables() {
 	('Gameplay'),
 	('Ynov');`
 
-	_, err := DB.Exec(insertDefaultTagsSQL)
+	_, err = DB.Exec(insertDefaultTagsSQL)
 	if err != nil {
 		log.Printf("Erreur lors de l'insertion des tags par défaut: %v", err)
 	}

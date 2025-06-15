@@ -13,7 +13,9 @@
         <div class="auth-container">
             <h1>Inscription</h1>
             {{if .Error}}
-                <div class="error-message">{{.Error}}</div>
+                <div class="alert alert-danger">
+                    {{.Error}}
+                </div>
             {{end}}
             {{if .Success}}
                 <div class="success-message">{{.Success}}</div>
@@ -24,8 +26,22 @@
                     <input type="text" id="username" name="username" required>
                 </div>
                 <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
                     <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password" required>
+                    <div class="password-requirements">
+                        <p>Le mot de passe doit contenir :</p>
+                        <ul>
+                            <li>Au moins 12 caractères</li>
+                            <li>Au moins une majuscule</li>
+                            <li>Au moins une minuscule</li>
+                            <li>Au moins un chiffre</li>
+                            <li>Au moins un caractère spécial (!@#$%^&*(),.?":{}|<>)</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">Confirmer le mot de passe</label>

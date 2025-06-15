@@ -1408,4 +1408,40 @@ nav {
 
 .comment-content {
     margin-bottom: 5px;
+}
+
+.password-requirements {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.password-requirements p {
+    margin: 0 0 5px 0;
+    font-weight: bold;
+    color: #495057;
+}
+
+.password-requirements ul {
+    margin: 0;
+    padding-left: 20px;
+    color: #6c757d;
+}
+
+.password-requirements li {
+    margin: 3px 0;
+}
+
+.alert {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
 } 

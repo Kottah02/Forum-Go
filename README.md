@@ -58,6 +58,8 @@ go run cmd/main.go
 
 L'application sera accessible à l'adresse : `http://localhost:8080`
 
+Utilisateur créer : NOM D'UTILISATEUR : kottah , MDP : 98Y76em21.eddy
+
 ## 🏗️ Structure du Projet
 
 ```

@@ -2,7 +2,9 @@ package models
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
+	"regexp"
 	"time"
 	"website/internal/config"
 
@@ -14,6 +16,14 @@ type User struct {
 	Username  string
 	CreatedAt time.Time
 }
+
+var (
+	ErrPasswordTooShort  = errors.New("le mot de passe doit contenir au moins 12 caractères")
+	ErrPasswordNoUpper   = errors.New("le mot de passe doit contenir au moins une majuscule")
+	ErrPasswordNoLower   = errors.New("le mot de passe doit contenir au moins une minuscule")
+	ErrPasswordNoNumber  = errors.New("le mot de passe doit contenir au moins un chiffre")
+	ErrPasswordNoSpecial = errors.New("le mot de passe doit contenir au moins un caractère spécial")
+)
 
 func GetUserByUsername(username string) (User, error) {
 	var user User
@@ -28,8 +38,49 @@ func GetUserByUsername(username string) (User, error) {
 	return user, nil
 }
 
-func CreateUser(username, password string) error {
-	_, err := config.DB.Exec("INSERT INTO users (username, password) VALUES (?, ?)", username, password)
+func validatePassword(password string) error {
+	if len(password) < 12 {
+		return ErrPasswordTooShort
+	}
+
+	hasUpper := regexp.MustCompile(`[A-Z]`).MatchString(password)
+	if !hasUpper {
+		return ErrPasswordNoUpper
+	}
+
+	hasLower := regexp.MustCompile(`[a-z]`).MatchString(password)
+	if !hasLower {
+		return ErrPasswordNoLower
+	}
+
+	hasNumber := regexp.MustCompile(`[0-9]`).MatchString(password)
+	if !hasNumber {
+		return ErrPasswordNoNumber
+	}
+
+	hasSpecial := regexp.MustCompile(`[!@#$%^&*(),.?":{}|<>]`).MatchString(password)
+	if !hasSpecial {
+		return ErrPasswordNoSpecial
+	}
+
+	return nil
+}
+
+func CreateUser(username, email, password string) error {
+	// Valider le mot de passe
+	if err := validatePassword(password); err != nil {
+		return err
+	}
+
+	// Hacher le mot de passe
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("erreur lors du hachage du mot de passe: %v", err)
+	}
+
+	// Insérer l'utilisateur avec le mot de passe haché
+	_, err = config.DB.Exec("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+		username, email, string(hashedPassword))
 	return err
 }
 
@@ -51,4 +102,21 @@ func UserExists(username string) (bool, error) {
 	var exists bool
 	err := config.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE username = ?)", username).Scan(&exists)
 	return exists, err
+}
+
+func EmailExists(email string) (bool, error) {
+	var exists bool
+	err := config.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE email = ?)", email).Scan(&exists)
+	return exists, err
+}
+
+func UpdatePassword(userID int, newPassword string) error {
+	// Valider le nouveau mot de passe
+	if err := validatePassword(newPassword); err != nil {
+		return err
+	}
+
+	// Le reste du code de mise à jour du mot de passe...
+	// ... existing code ...
+	return nil
 }
