@@ -1378,4 +1378,34 @@ nav {
 
 .btn-secondary:hover {
     background-color: #5a6268;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.delete-comment-form {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.comment {
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment-content {
+    margin-bottom: 5px;
 } 

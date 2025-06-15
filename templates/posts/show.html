@@ -68,11 +68,21 @@
 
                 <div class="comments-list">
                     {{range .Comments}}
-                    <div class="comment-card">
-                        <p class="comment-content">{{.Content}}</p>
+                    <div class="comment">
+                        <div class="comment-content">
+                            <p>{{.Content}}</p>
+                        </div>
                         <div class="comment-meta">
                             <span class="comment-author">Par {{.Author}}</span>
                             <span class="comment-date">{{.CreatedAt.Format "02/01/2006 15:04"}}</span>
+                            {{if $.IsAuthenticated}}
+                                {{if eq .Author $.Username}}
+                                <form action="/posts/delete-comment" method="POST" class="delete-comment-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                    <input type="hidden" name="comment_id" value="{{.ID}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                </form>
+                                {{end}}
+                            {{end}}
                         </div>
                     </div>
                     {{else}}

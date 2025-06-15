@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"time"
 	"website/internal/config"
 )
@@ -82,4 +83,27 @@ func GetRecentCommentsByUserID(userID int, limit int) ([]*Comment, error) {
 		comments = append(comments, comment)
 	}
 	return comments, rows.Err()
+}
+
+func DeleteComment(commentID int) error {
+	_, err := config.DB.Exec("DELETE FROM comments WHERE id = ?", commentID)
+	return err
+}
+
+func GetCommentByID(commentID int) (*Comment, error) {
+	row := config.DB.QueryRow(`
+		SELECT c.id, c.post_id, c.user_id, c.content, c.created_at, u.username 
+		FROM comments c 
+		JOIN users u ON c.user_id = u.id 
+		WHERE c.id = ?`, commentID)
+
+	comment := &Comment{}
+	err := row.Scan(&comment.ID, &comment.PostID, &comment.UserID, &comment.Content, &comment.CreatedAt, &comment.Author)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return comment, nil
 }

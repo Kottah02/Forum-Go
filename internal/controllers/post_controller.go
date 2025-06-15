@@ -442,3 +442,49 @@ func (c *PostController) Update(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, fmt.Sprintf("/posts/consulter?id=%d", postID), http.StatusSeeOther)
 }
+
+func (c *PostController) DeleteComment(w http.ResponseWriter, r *http.Request) {
+	if !middleware.IsAuthenticated(r) {
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	if r.Method != "POST" {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+
+	commentID, err := strconv.Atoi(r.FormValue("comment_id"))
+	if err != nil {
+		http.Error(w, "ID de commentaire invalide", http.StatusBadRequest)
+		return
+	}
+
+	// Récupérer le commentaire pour vérifier l'auteur
+	comment, err := models.GetCommentByID(commentID)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération du commentaire", http.StatusInternalServerError)
+		return
+	}
+
+	if comment == nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Vérifier que l'utilisateur est l'auteur du commentaire
+	username, _ := middleware.GetUserInfo(r)
+	if comment.Author != username {
+		http.Error(w, "Vous n'êtes pas autorisé à supprimer ce commentaire", http.StatusForbidden)
+		return
+	}
+
+	// Supprimer le commentaire
+	if err := models.DeleteComment(commentID); err != nil {
+		http.Error(w, "Erreur lors de la suppression du commentaire", http.StatusInternalServerError)
+		return
+	}
+
+	// Rediriger vers le post
+	http.Redirect(w, r, fmt.Sprintf("/posts/consulter?id=%d", comment.PostID), http.StatusSeeOther)
+}

@@ -24,6 +24,7 @@ func SetupRoutes(authController *controllers.AuthController, userController *con
 	http.HandleFunc("/posts", postController.List)
 	http.HandleFunc("/posts/consulter", postController.Show)
 	http.HandleFunc("/posts/add-comment", middleware.RequireAuth(postController.AddComment))
+	http.HandleFunc("/posts/delete-comment", middleware.RequireAuth(postController.DeleteComment))
 	http.HandleFunc("/posts/delete", middleware.RequireAuth(postController.Delete))
 	http.HandleFunc("/posts/edit", middleware.RequireAuth(postController.Edit))
 	http.HandleFunc("/posts/update", middleware.RequireAuth(postController.Update))
