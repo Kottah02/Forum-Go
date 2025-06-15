@@ -1,14 +1,14 @@
 package models
 
 import (
+	"crypto/sha512"
 	"database/sql"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"regexp"
 	"time"
 	"website/internal/config"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
@@ -72,15 +72,14 @@ func CreateUser(username, email, password string) error {
 		return err
 	}
 
-	// Hacher le mot de passe
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	if err != nil {
-		return fmt.Errorf("erreur lors du hachage du mot de passe: %v", err)
-	}
+	// Hacher le mot de passe avec SHA-512
+	hasher := sha512.New()
+	hasher.Write([]byte(password))
+	hashedPassword := hex.EncodeToString(hasher.Sum(nil))
 
 	// Insérer l'utilisateur avec le mot de passe haché
-	_, err = config.DB.Exec("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-		username, email, string(hashedPassword))
+	_, err := config.DB.Exec("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+		username, email, hashedPassword)
 	return err
 }
 
@@ -94,8 +93,13 @@ func ValidateUser(username, password string) (bool, error) {
 		return false, err
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
-	return err == nil, nil
+	// Hacher le mot de passe fourni avec SHA-512
+	hasher := sha512.New()
+	hasher.Write([]byte(password))
+	providedHash := hex.EncodeToString(hasher.Sum(nil))
+
+	// Comparer les hash
+	return providedHash == hashedPassword, nil
 }
 
 func UserExists(username string) (bool, error) {
