@@ -25,6 +25,8 @@ func SetupRoutes(authController *controllers.AuthController, userController *con
 	http.HandleFunc("/posts/consulter", postController.Show)
 	http.HandleFunc("/posts/add-comment", middleware.RequireAuth(postController.AddComment))
 	http.HandleFunc("/posts/delete", middleware.RequireAuth(postController.Delete))
+	http.HandleFunc("/posts/edit", middleware.RequireAuth(postController.Edit))
+	http.HandleFunc("/posts/update", middleware.RequireAuth(postController.Update))
 	http.HandleFunc("/posts/", func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasSuffix(r.URL.Path, "/react") {
 			middleware.RequireAuth(postController.React)(w, r)

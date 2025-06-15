@@ -325,3 +325,120 @@ func (c *PostController) Delete(w http.ResponseWriter, r *http.Request) {
 
 	http.Redirect(w, r, "/posts", http.StatusSeeOther)
 }
+
+func (c *PostController) Edit(w http.ResponseWriter, r *http.Request) {
+	if !middleware.IsAuthenticated(r) {
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	postID, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		http.Error(w, "ID de post invalide", http.StatusBadRequest)
+		return
+	}
+
+	// Récupérer le post
+	post, err := models.GetPostByID(postID)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération du post", http.StatusInternalServerError)
+		return
+	}
+
+	if post == nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Vérifier que l'utilisateur est l'auteur du post
+	username, _ := middleware.GetUserInfo(r)
+	if post.Author != username {
+		http.Error(w, "Vous n'êtes pas autorisé à modifier ce post", http.StatusForbidden)
+		return
+	}
+
+	// Récupérer tous les tags disponibles
+	tags, err := models.GetAllTags()
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération des tags", http.StatusInternalServerError)
+		return
+	}
+
+	// Récupérer les tags actuels du post
+	currentTagIDs := make(map[int]bool)
+	for _, tag := range post.Tags {
+		currentTagIDs[tag.ID] = true
+	}
+
+	data := map[string]interface{}{
+		"Post":          post,
+		"Tags":          tags,
+		"CurrentTagIDs": currentTagIDs,
+	}
+
+	renderTemplate(w, r, "posts/edit", data)
+}
+
+func (c *PostController) Update(w http.ResponseWriter, r *http.Request) {
+	if !middleware.IsAuthenticated(r) {
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	if r.Method != "POST" {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+
+	postID, err := strconv.Atoi(r.FormValue("post_id"))
+	if err != nil {
+		http.Error(w, "ID de post invalide", http.StatusBadRequest)
+		return
+	}
+
+	// Vérifier que l'utilisateur est l'auteur du post
+	post, err := models.GetPostByID(postID)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération du post", http.StatusInternalServerError)
+		return
+	}
+
+	if post == nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	username, _ := middleware.GetUserInfo(r)
+	if post.Author != username {
+		http.Error(w, "Vous n'êtes pas autorisé à modifier ce post", http.StatusForbidden)
+		return
+	}
+
+	title := strings.TrimSpace(r.FormValue("title"))
+	content := strings.TrimSpace(r.FormValue("content"))
+	tagIDs := r.Form["tags"]
+
+	if title == "" || content == "" {
+		http.Error(w, "Le titre et le contenu ne peuvent pas être vides", http.StatusBadRequest)
+		return
+	}
+
+	// Convertir les tagIDs en []int
+	var tagIDsInt []int
+	for _, tagID := range tagIDs {
+		id, err := strconv.Atoi(tagID)
+		if err != nil {
+			http.Error(w, "ID de tag invalide", http.StatusBadRequest)
+			return
+		}
+		tagIDsInt = append(tagIDsInt, id)
+	}
+
+	// Mettre à jour le post
+	if err := models.UpdatePost(postID, title, content, tagIDsInt); err != nil {
+		http.Error(w, "Erreur lors de la mise à jour du post", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, fmt.Sprintf("/posts/consulter?id=%d", postID), http.StatusSeeOther)
+}

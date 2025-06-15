@@ -1348,8 +1348,34 @@ nav {
     margin-top: 1rem;
     padding-top: 1rem;
     border-top: 1px solid #eee;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
 .delete-form {
     display: inline-block;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
 } 

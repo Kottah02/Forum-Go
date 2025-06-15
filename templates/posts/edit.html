@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier le post - Forum-strike</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {{template "nav.html" .}}
+
+    <main class="container">
+        <div class="posts-container">
+            <h1>Modifier le post</h1>
+            
+            <form action="/posts/update" method="POST" class="post-form">
+                <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                
+                <div class="form-group">
+                    <label for="title">Titre</label>
+                    <input type="text" id="title" name="title" value="{{.Post.Title}}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">Contenu</label>
+                    <textarea id="content" name="content" required>{{.Post.Content}}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Tags</label>
+                    <div class="tags-selection">
+                        {{range .Tags}}
+                        <div class="tag-option">
+                            <input type="checkbox" id="tag-{{.ID}}" name="tags" value="{{.ID}}" 
+                                {{if index $.CurrentTagIDs .ID}}checked{{end}}>
+                            <label for="tag-{{.ID}}">{{.Name}}</label>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    <a href="/posts/consulter?id={{.Post.ID}}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html> 

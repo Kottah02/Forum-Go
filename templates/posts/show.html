@@ -26,6 +26,7 @@
                 {{if .IsAuthenticated}}
                     {{if eq .Post.Author .Username}}
                     <div class="post-actions">
+                        <a href="/posts/edit?id={{.Post.ID}}" class="btn btn-primary">Modifier</a>
                         <form action="/posts/delete" method="POST" class="delete-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?');">
                             <input type="hidden" name="post_id" value="{{.Post.ID}}">
                             <button type="submit" class="btn btn-danger">Supprimer le post</button>

@@ -361,3 +361,35 @@ func DeletePost(postID int) error {
 
 	return tx.Commit()
 }
+
+func UpdatePost(postID int, title, content string, tagIDs []int) error {
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Mettre à jour le post
+	_, err = tx.Exec("UPDATE posts SET title = ?, content = ? WHERE id = ?",
+		title, content, postID)
+	if err != nil {
+		return err
+	}
+
+	// Supprimer les anciens tags
+	_, err = tx.Exec("DELETE FROM post_tags WHERE post_id = ?", postID)
+	if err != nil {
+		return err
+	}
+
+	// Ajouter les nouveaux tags
+	for _, tagID := range tagIDs {
+		_, err = tx.Exec("INSERT INTO post_tags (post_id, tag_id) VALUES (?, ?)",
+			postID, tagID)
+		if err != nil {
+			return err
+		}
+	}
+
+	return tx.Commit()
+}
