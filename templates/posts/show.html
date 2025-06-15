@@ -24,6 +24,16 @@
                     <span class="post-date">{{.Post.CreatedAt.Format "02/01/2006 15:04"}}</span>
                 </div>
                 {{if .IsAuthenticated}}
+                    {{if eq .Post.Author .Username}}
+                    <div class="post-actions">
+                        <form action="/posts/delete" method="POST" class="delete-form" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce post ?');">
+                            <input type="hidden" name="post_id" value="{{.Post.ID}}">
+                            <button type="submit" class="btn btn-danger">Supprimer le post</button>
+                        </form>
+                    </div>
+                    {{end}}
+                {{end}}
+                {{if .IsAuthenticated}}
                 <div class="post-reactions">
                     <form action="/posts/{{.Post.ID}}/react" method="POST" class="reaction-form">
                         <input type="hidden" name="reaction_type" value="like">

@@ -130,6 +130,21 @@ nav {
     background-color: #4179a3; /* Darker blue/grey on hover */
 }
 
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
 /* Formulaires d'authentification */
 .auth-container {
     background-color: #1a1a1a; /* Darker background for auth container */
@@ -1327,4 +1342,14 @@ nav {
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.post-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.delete-form {
+    display: inline-block;
 } 

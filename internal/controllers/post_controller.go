@@ -274,3 +274,54 @@ func (c *PostController) AddComment(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/posts/consulter?id="+idStr, http.StatusSeeOther)
 	log.Printf("AddComment: Redirecting to /posts/consulter?id=%s", idStr)
 }
+
+func (c *PostController) Delete(w http.ResponseWriter, r *http.Request) {
+	if !middleware.IsAuthenticated(r) {
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	if r.Method != "POST" {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+
+	postID, err := strconv.Atoi(r.FormValue("post_id"))
+	if err != nil {
+		http.Error(w, "ID de post invalide", http.StatusBadRequest)
+		return
+	}
+
+	// Vérifier que l'utilisateur est l'auteur du post
+	post, err := models.GetPostByID(postID)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération du post", http.StatusInternalServerError)
+		return
+	}
+
+	if post == nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	username, _ := middleware.GetUserInfo(r)
+	user, err := models.GetUserByUsername(username)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération de l'utilisateur", http.StatusInternalServerError)
+		return
+	}
+
+	// Vérifier si l'utilisateur est l'auteur du post
+	if post.Author != user.Username {
+		http.Error(w, "Vous n'êtes pas autorisé à supprimer ce post", http.StatusForbidden)
+		return
+	}
+
+	// Supprimer le post
+	if err := models.DeletePost(postID); err != nil {
+		http.Error(w, "Erreur lors de la suppression du post", http.StatusInternalServerError)
+		return
+	}
+
+	http.Redirect(w, r, "/posts", http.StatusSeeOther)
+}

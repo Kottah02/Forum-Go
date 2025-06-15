@@ -328,3 +328,36 @@ func GetAllPostsByUserID(userID int) ([]Post, error) {
 
 	return posts, rows.Err()
 }
+
+func DeletePost(postID int) error {
+	tx, err := config.DB.Begin()
+	if err != nil {
+		return err
+	}
+	defer tx.Rollback()
+
+	// Supprimer d'abord les relations (post_tags et post_reactions)
+	_, err = tx.Exec("DELETE FROM post_tags WHERE post_id = ?", postID)
+	if err != nil {
+		return err
+	}
+
+	_, err = tx.Exec("DELETE FROM post_reactions WHERE post_id = ?", postID)
+	if err != nil {
+		return err
+	}
+
+	// Supprimer les commentaires associés
+	_, err = tx.Exec("DELETE FROM comments WHERE post_id = ?", postID)
+	if err != nil {
+		return err
+	}
+
+	// Enfin, supprimer le post
+	_, err = tx.Exec("DELETE FROM posts WHERE id = ?", postID)
+	if err != nil {
+		return err
+	}
+
+	return tx.Commit()
+}
