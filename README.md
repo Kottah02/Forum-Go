@@ -5,7 +5,11 @@ Un forum moderne et interactif développé en Go, permettant aux utilisateurs de
 ## 🚀 Fonctionnalités
 
 ### Authentification et Gestion des Utilisateurs
-- Inscription et connexion des utilisateurs
+- Inscription et connexion des utilisateurs 
+    -Pseudo
+    -Email
+    -Mot de passe (12 caractères, Majuscule, Minuscule, Chiffre, caractères spécial)
+    -Confirmation de Mot de passe
 - Profil utilisateur personnalisé
 - Gestion des sessions
 - Protection des routes sensibles
